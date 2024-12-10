@@ -1,0 +1,187 @@
+openapi: 3.0.0
+info:
+  title: Brewery and Beer API
+  description: API for managing breweries and their beers.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+    description: Local development server
+paths:
+  /breweries:
+    get:
+      summary: Get a list of all breweries
+      responses:
+        '200':
+          description: A list of breweries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Brewery'
+    post:
+      summary: Create a new brewery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BreweryInput'
+      responses:
+        '201':
+          description: Brewery created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Brewery'
+  /breweries/{id}:
+    get:
+      summary: Get details of a specific brewery
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Brewery details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BreweryDetail'
+        '404':
+          description: Brewery not found
+    put:
+      summary: Update a specific brewery
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BreweryInput'
+      responses:
+        '200':
+          description: Brewery updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Brewery'
+        '404':
+          description: Brewery not found
+  /beers:
+    get:
+      summary: Get a list of all beers
+      responses:
+        '200':
+          description: A list of beers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Beer'
+  /beers/{id}:
+    get:
+      summary: Get details of a specific beer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Beer details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Beer'
+        '404':
+          description: Beer not found
+    put:
+      summary: Update a specific beer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BeerInput'
+      responses:
+        '200':
+          description: Beer updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Beer'
+        '404':
+          description: Beer not found
+components:
+  schemas:
+    Brewery:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: string
+    BreweryInput:
+      type: object
+      properties:
+        name:
+          type: string
+        location:
+          type: string
+      required:
+        - name
+        - location
+    BreweryDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: string
+        beers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Beer'
+    Beer:
+      type: object
+      properties:
+        id:
+          type: integer
+        breweryId:
+          type: integer
+        name:
+          type: string
+        alcohol:
+          type: number
+          format: float
+    BeerInput:
+      type: object
+      properties:
+        name:
+          type: string
+        alcohol:
+          type: number
+          format: float
+      required:
+        - name
+        - alcohol
