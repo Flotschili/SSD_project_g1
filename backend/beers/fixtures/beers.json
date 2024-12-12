@@ -2,91 +2,91 @@
     {
         "model": "beers.beer",
         "fields": {
-            "name": "Heineken Original",
-            "description": "A classic pale lager with a mild bitterness and crisp finish.",
-            "brewery": "Heineken N.V.",
-            "created_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-01T00:00:00Z"
+            "name": "Stiegl Goldbräu",
+            "brewery": "Stiegl Brewery",
+            "description": "A full-bodied Austrian lager with a golden hue and well-balanced malt flavors.",
+            "alcohol_content": 5.0,
+            "beer_type": "Lager"
         }
     },
     {
         "model": "beers.beer",
         "fields": {
-            "name": "Heineken Light",
-            "description": "A lighter, lower-calorie version of the original with the same great taste.",
-            "brewery": "Heineken N.V.",
-            "created_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-01T00:00:00Z"
+            "name": "Gösser Märzen",
+            "brewery": "Gösser Brewery",
+            "description": "A traditional Märzen with a smooth malt taste and a slightly sweet finish.",
+            "alcohol_content": 5.2,
+            "beer_type": "Märzen"
         }
     },
     {
         "model": "beers.beer",
         "fields": {
-            "name": "Heineken 0.0",
-            "description": "A non-alcoholic beer with refreshing malt flavors and a balanced finish.",
-            "brewery": "Heineken N.V.",
-            "created_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-01T00:00:00Z"
+            "name": "Ottakringer Helles",
+            "brewery": "Ottakringer Brewery",
+            "description": "A refreshing Helles beer with mild bitterness and a clean malt character.",
+            "alcohol_content": 5.2,
+            "beer_type": "Helles"
         }
     },
     {
         "model": "beers.beer",
         "fields": {
-            "name": "Guinness Draught",
-            "description": "A rich and creamy stout with roasted malt flavors and a velvety texture.",
-            "brewery": "Guinness Brewery",
-            "created_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-01T00:00:00Z"
+            "name": "Trumer Pils",
+            "brewery": "Trumer Brewery",
+            "description": "A crisp and refreshing pilsner with delicate hop bitterness and a clean finish.",
+            "alcohol_content": 4.9,
+            "beer_type": "Pilsner"
         }
     },
     {
         "model": "beers.beer",
         "fields": {
-            "name": "Guinness Extra Stout",
-            "description": "A bold and robust stout with a complex blend of roasted malts and hops.",
-            "brewery": "Guinness Brewery",
-            "created_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-01T00:00:00Z"
+            "name": "Zipfer Urtyp",
+            "brewery": "Zipfer Brewery",
+            "description": "A balanced pale lager with subtle hop bitterness and a malty backbone.",
+            "alcohol_content": 5.4,
+            "beer_type": "Pale Lager"
         }
     },
     {
         "model": "beers.beer",
         "fields": {
-            "name": "Guinness Blonde",
-            "description": "A crisp and light blonde lager with subtle malt sweetness and hop character.",
-            "brewery": "Guinness Brewery",
-            "created_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-01T00:00:00Z"
+            "name": "Eggenberg Samichlaus",
+            "brewery": "Schloss Eggenberg Brewery",
+            "description": "A rich and strong doppelbock with notes of caramel, chocolate, and dark fruit.",
+            "alcohol_content": 14.0,
+            "beer_type": "Doppelbock"
         }
     },
     {
         "model": "beers.beer",
         "fields": {
-            "name": "Sam Adams Boston Lager",
-            "description": "A full-bodied craft lager with malty sweetness and hoppy spiciness.",
-            "brewery": "Samuel Adams Brewery",
-            "created_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-01T00:00:00Z"
+            "name": "Schladminger Bio Zwickl",
+            "brewery": "Schladminger Brewery",
+            "description": "An unfiltered organic Zwickl beer with a cloudy appearance and refreshing taste.",
+            "alcohol_content": 5.0,
+            "beer_type": "Zwickl"
         }
     },
     {
         "model": "beers.beer",
         "fields": {
-            "name": "Sam Adams Summer Ale",
-            "description": "A refreshing wheat ale with hints of lemon zest and grains of paradise.",
-            "brewery": "Samuel Adams Brewery",
-            "created_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-01T00:00:00Z"
+            "name": "Murauer Märzen",
+            "brewery": "Murauer Brewery",
+            "description": "A classic Märzen beer with a smooth malt flavor and a hint of sweetness.",
+            "alcohol_content": 5.0,
+            "beer_type": "Märzen"
         }
     },
     {
         "model": "beers.beer",
         "fields": {
-            "name": "Sam Adams OctoberFest",
-            "description": "A seasonal amber lager with rich malt flavors and a smooth finish.",
-            "brewery": "Samuel Adams Brewery",
-            "created_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-01T00:00:00Z"
+            "name": "Hirter Privat Pils",
+            "brewery": "Hirter Brewery",
+            "description": "A premium pilsner with a pronounced hop aroma and a dry, crisp finish.",
+            "alcohol_content": 5.2,
+            "beer_type": "Pilsner"
         }
     }
 ]
