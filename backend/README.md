@@ -15,6 +15,7 @@ A web application
    
 3. **Apply migrations:**
     ```bash
+   python manage.py makemigrations beers
    python manage.py migrate
 
 4. **Run the development server:**
