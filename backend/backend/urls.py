@@ -15,15 +15,29 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.contrib.auth import urls as auth_urls
+from django.conf import settings
+from django.http import HttpResponseRedirect
+from django.urls import reverse, path, include
 from rest_framework.schemas import get_schema_view
-from rest_framework import permissions
+from rest_framework.permissions import BasePermission  # Import this
 from drf_yasg.views import get_schema_view as swagger_get_schema_view
 from drf_yasg import openapi
 
-class AdminOnlyPermission(permissions.BasePermission):
+class AdminOnlyPermission(BasePermission):
     def has_permission(self, request, view):
-        return request.user and request.user.is_staff
+        if not request.user.is_authenticated:
+            if settings.DEBUG:
+                return False
+            return False
+        return request.user.is_staff
+
+def swagger_redirect(request):
+    if not request.user.is_authenticated and settings.DEBUG:
+        login_url = f"/auth/api/login/?next={request.path}"
+        return HttpResponseRedirect(login_url)  # Redirect to /auth/api/login/ with ?next=/swagger/
+    return schema_view.with_ui('swagger', cache_timeout=0)(request)
+
 
 API_TITLE = 'BeerHub'
 API_DESCRIPTION = 'A nice web API for beer'
@@ -43,10 +57,11 @@ urlpatterns = [
 
     path('schema/', get_schema_view(title=API_TITLE)),
 
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('swagger/', swagger_redirect, name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    path('auth/', include('rest_framework.urls')),
+    path('auth/api/', include('rest_framework.urls')),
+    path('auth/', include(auth_urls)),
     path('api/v1/beers/', include('beers.urls')),
     path('api/v1/auth/', include('dj_rest_auth.urls')),
     path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
