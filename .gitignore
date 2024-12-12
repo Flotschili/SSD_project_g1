@@ -1,4 +1,48 @@
-
+# IDE and Editor files
 **/.idea/
+**/.vscode/
+*.swp
+*.swo
+
+# Virtual Environments
 **/.venv/
+**/env/
+**/venv/
+**/ENV/
+
+# Python compiled files
 **/__pycache__/
+*.py[cod]
+*$py.class
+
+# Poetry specific
+poetry.lock
+
+# Django specific
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# Testing and coverage
+.coverage
+.tox/
+.pytest_cache/
+htmlcov/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Build and distribution
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Secrets and configuration
+*.env
+.env.*
+*.ini
+*.cfg
+*.local
