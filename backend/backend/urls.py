@@ -34,7 +34,7 @@ class AdminOnlyPermission(BasePermission):
 
 def swagger_redirect(request):
     if not request.user.is_authenticated and settings.DEBUG:
-        login_url = f"/auth/api/login/?next={request.path}"
+        login_url = f"/auth/login/?next={request.path}"
         return HttpResponseRedirect(login_url)  # Redirect to /auth/api/login/ with ?next=/swagger/
     return schema_view.with_ui('swagger', cache_timeout=0)(request)
 
@@ -60,8 +60,7 @@ urlpatterns = [
     path('swagger/', swagger_redirect, name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    path('auth/api/', include('rest_framework.urls')),
-    path('auth/', include(auth_urls)),
+    path('auth/', include('rest_framework.urls')),
     path('api/v1/beers/', include('beers.urls')),
     path('api/v1/auth/', include('dj_rest_auth.urls')),
     path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
