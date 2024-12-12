@@ -22,7 +22,7 @@ A web application
     ```bash
    python manage.py runserver
    
-# Creating an Admin User
+## Creating an Admin User
 
 1. Run the following command:
    ```bash
@@ -33,3 +33,13 @@ A web application
 3. Access the admin interface at:
    ```bash
    http://127.0.0.1:8000/admin-<obscurity_str_look_urls.py>/
+   
+## Loading Sample Data
+
+To populate the database with sample beers for development or testing purposes, follow these steps:
+
+1. Ensure the `BeerHub` app has a `fixtures` folder with the `beers.json` file:
+
+2. Run the following command to load the data into the database:
+   ```bash
+    python manage.py loaddata beers.json
