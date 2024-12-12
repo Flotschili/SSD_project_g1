@@ -9,7 +9,7 @@ class Beer(models.Model):
     name = models.CharField(max_length=100, validators=[validate_title])
     brewery = models.CharField(max_length=100)
     description = models.TextField(validators=[RegexValidator(r'^[\w\s.:;\'"]*$')])
-    alcohol_content: models.DecimalField(max_digits=5, decimal_places=2)
+    alcohol_content = models.DecimalField(max_digits=5, decimal_places=2)
     beer_type = models.CharField(max_length=100)
 
     created_at = models.DateTimeField(auto_now_add=True)
