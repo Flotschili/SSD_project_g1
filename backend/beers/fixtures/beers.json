@@ -6,7 +6,9 @@
             "brewery": "Stiegl Brewery",
             "description": "A full-bodied Austrian lager with a golden hue and well-balanced malt flavors.",
             "alcohol_content": 5.0,
-            "beer_type": "Lager"
+            "beer_type": "Lager",
+            "created_at": "2024-12-12T00:00:00Z",
+            "updated_at": "2024-12-12T00:00:00Z"
         }
     },
     {
@@ -16,7 +18,9 @@
             "brewery": "Gösser Brewery",
             "description": "A traditional Märzen with a smooth malt taste and a slightly sweet finish.",
             "alcohol_content": 5.2,
-            "beer_type": "Märzen"
+            "beer_type": "Märzen",
+            "created_at": "2024-12-12T00:00:00Z",
+            "updated_at": "2024-12-12T00:00:00Z"
         }
     },
     {
@@ -26,7 +30,9 @@
             "brewery": "Ottakringer Brewery",
             "description": "A refreshing Helles beer with mild bitterness and a clean malt character.",
             "alcohol_content": 5.2,
-            "beer_type": "Helles"
+            "beer_type": "Helles",
+            "created_at": "2024-12-12T00:00:00Z",
+            "updated_at": "2024-12-12T00:00:00Z"
         }
     },
     {
@@ -36,7 +42,9 @@
             "brewery": "Trumer Brewery",
             "description": "A crisp and refreshing pilsner with delicate hop bitterness and a clean finish.",
             "alcohol_content": 4.9,
-            "beer_type": "Pilsner"
+            "beer_type": "Pilsner",
+            "created_at": "2024-12-12T00:00:00Z",
+            "updated_at": "2024-12-12T00:00:00Z"
         }
     },
     {
@@ -46,7 +54,9 @@
             "brewery": "Zipfer Brewery",
             "description": "A balanced pale lager with subtle hop bitterness and a malty backbone.",
             "alcohol_content": 5.4,
-            "beer_type": "Pale Lager"
+            "beer_type": "Pale Lager",
+            "created_at": "2024-12-12T00:00:00Z",
+            "updated_at": "2024-12-12T00:00:00Z"
         }
     },
     {
@@ -56,7 +66,9 @@
             "brewery": "Schloss Eggenberg Brewery",
             "description": "A rich and strong doppelbock with notes of caramel, chocolate, and dark fruit.",
             "alcohol_content": 14.0,
-            "beer_type": "Doppelbock"
+            "beer_type": "Doppelbock",
+            "created_at": "2024-12-12T00:00:00Z",
+            "updated_at": "2024-12-12T00:00:00Z"
         }
     },
     {
@@ -66,7 +78,9 @@
             "brewery": "Schladminger Brewery",
             "description": "An unfiltered organic Zwickl beer with a cloudy appearance and refreshing taste.",
             "alcohol_content": 5.0,
-            "beer_type": "Zwickl"
+            "beer_type": "Zwickl",
+            "created_at": "2024-12-12T00:00:00Z",
+            "updated_at": "2024-12-12T00:00:00Z"
         }
     },
     {
@@ -76,7 +90,9 @@
             "brewery": "Murauer Brewery",
             "description": "A classic Märzen beer with a smooth malt flavor and a hint of sweetness.",
             "alcohol_content": 5.0,
-            "beer_type": "Märzen"
+            "beer_type": "Märzen",
+            "created_at": "2024-12-12T00:00:00Z",
+            "updated_at": "2024-12-12T00:00:00Z"
         }
     },
     {
@@ -86,7 +102,9 @@
             "brewery": "Hirter Brewery",
             "description": "A premium pilsner with a pronounced hop aroma and a dry, crisp finish.",
             "alcohol_content": 5.2,
-            "beer_type": "Pilsner"
+            "beer_type": "Pilsner",
+            "created_at": "2024-12-12T00:00:00Z",
+            "updated_at": "2024-12-12T00:00:00Z"
         }
     }
 ]
