@@ -5,7 +5,8 @@ from typing import Any, Tuple, Callable
 
 from valid8 import validate, ValidationError
 
-from beer_hub.domain import BeerHub, Beer, Name, Brewery, BeerType, AlcoholContent
+from beer_hub.domain import Beer, Name, Brewery, BeerType, AlcoholContent
+from beer_hub.logic import BeerHub, ping_backend
 from beer_hub.menu import Menu, Description, Entry
 
 
@@ -21,6 +22,7 @@ class App:
             .with_entry(Entry.create('4', 'List breweries', on_selected=lambda: self.__list_breweries()))\
             .with_entry(Entry.create('5', 'Filter by breweries', on_selected=lambda: self.__filter_by_breweries()))\
             .with_entry(Entry.create('6', 'Sort by ascending alcohol content', on_selected=lambda: self.__sort_by_ascending_alcohol_content()))\
+            .with_entry(Entry.create('7', 'Ping Backend', on_selected=lambda: self.__ping_backend()))\
             .with_entry(Entry.create('0', 'Exit', on_selected=lambda: print('Bye!'), is_exit=True))\
             .build()
         self.__beer_hub = BeerHub()
@@ -103,6 +105,9 @@ class App:
 
     def __sort_by_ascending_alcohol_content(self):
         pass #TODO
+
+    def __ping_backend(self):
+        ping_backend()
 
     @staticmethod
     def __print_beers_internal(beers):
