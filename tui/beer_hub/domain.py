@@ -71,9 +71,9 @@ class Name:
     def __post_init__(self):
         validate_dataclass(self)
         validate('value', self.value,
-                min_len=ValidationConstants.NAME_MIN_LENGTH,
-                max_len=ValidationConstants.NAME_MAX_LENGTH,
-                custom=pattern(ValidationConstants.ALPHANUMERIC_SPACE_PATTERN))
+                 min_len=ValidationConstants.NAME_MIN_LENGTH,
+                 max_len=ValidationConstants.NAME_MAX_LENGTH,
+                 custom=pattern(ValidationConstants.ALPHANUMERIC_SPACE_PATTERN))
 
     def __str__(self):
         return self.value
@@ -86,13 +86,15 @@ class Description:
     def __post_init__(self):
         validate_dataclass(self)
         validate('value', self.value,
-                min_len=ValidationConstants.DESCRIPTION_MIN_LENGTH,
-                max_len=ValidationConstants.DESCRIPTION_MAX_LENGTH,
-                custom=pattern(ValidationConstants.ALPHANUMERIC_SPACE_PATTERN))
+                 min_len=ValidationConstants.DESCRIPTION_MIN_LENGTH,
+                 max_len=ValidationConstants.DESCRIPTION_MAX_LENGTH,
+                 custom=pattern(ValidationConstants.ALPHANUMERIC_SPACE_PATTERN))
 
     def __str__(self):
         return self.value
 
+    def __len__(self):
+        return len(self.value)
 
 @dataclass(frozen=True, order=True)
 class Brewery:
@@ -101,9 +103,9 @@ class Brewery:
     def __post_init__(self):
         validate_dataclass(self)
         validate('value', self.value,
-                min_len=ValidationConstants.BREWERY_MIN_LENGTH,
-                max_len=ValidationConstants.BREWERY_MAX_LENGTH,
-                custom=pattern(ValidationConstants.ALPHANUMERIC_SPACE_PATTERN))
+                 min_len=ValidationConstants.BREWERY_MIN_LENGTH,
+                 max_len=ValidationConstants.BREWERY_MAX_LENGTH,
+                 custom=pattern(ValidationConstants.ALPHANUMERIC_SPACE_PATTERN))
 
     def __str__(self):
         return self.value
@@ -135,8 +137,8 @@ class AlcoholContent:
     def __post_init__(self):
         validate_dataclass(self)
         validate('value', self.value,
-                min_value=ValidationConstants.ALCOHOL_CONTENT_MIN,
-                max_value=ValidationConstants.ALCOHOL_CONTENT_MAX)
+                 min_value=ValidationConstants.ALCOHOL_CONTENT_MIN,
+                 max_value=ValidationConstants.ALCOHOL_CONTENT_MAX)
 
     @staticmethod
     def of(alcohol_content: str) -> 'AlcoholContent':
@@ -147,7 +149,22 @@ class AlcoholContent:
 
 
 @dataclass(frozen=True, order=True)
+class ID:
+    value: int
+
+    def __post_init__(self):
+        validate_dataclass(self)
+        validate('value', self.value, min_value=0)
+
+    def __str__(self):
+        return str(self.value)
+
+    def __int__(self):
+        return self.value
+
+@dataclass(frozen=True, order=True)
 class Beer:
+    id: ID
     name: Name
     description: Description
     brewery: Brewery
@@ -157,11 +174,12 @@ class Beer:
     @staticmethod
     def of(name: str, description: str, brewery: str, beer_type: str, alcohol_content: float) -> 'Beer':
         return Beer(
+            ID(-1),  # TODO: discuss strategy for IDs
             Name(name),
             Description(description),
             Brewery(brewery),
             BeerType(beer_type),
-            AlcoholContent(alcohol_content),
+            AlcoholContent(alcohol_content)
         )
 
     def __eq__(self, other: object) -> bool:
@@ -172,4 +190,3 @@ class Beer:
                 self.brewery == other.brewery and
                 self.beer_type == other.beer_type and
                 self.alcohol_content == other.alcohol_content)
-
