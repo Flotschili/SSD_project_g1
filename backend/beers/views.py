@@ -1,35 +1,57 @@
-from rest_framework import generics, viewsets
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from pickle import FALSE
 
-from beers.models import Beer
-from beers.permissions import IsBreweryOrReadOnly, IsBeerEditor
-from beers.serializers import BeerSerializer
-
-
-# class BeerList(generics.ListCreateAPIView):
-#     queryset = Beer.objects.all()
-#     serializer_class = BeerSerializer
-#
-#
-# class BeerDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Beer.objects.all()
-#     serializer_class = BeerSerializer
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from django.shortcuts import get_object_or_404
+from .models import Beer
+from .serializers import BeerSerializer
+from .permissions import IsBeerViewer, IsBeerEditor
 
 class BeerViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsBreweryOrReadOnly, IsAuthenticated]
+    """
+    A ViewSet to manage Beer instances.
+    This ViewSet provides actions for different methods.
+    """
+
     queryset = Beer.objects.all()
     serializer_class = BeerSerializer
 
+    # permissions
+    read_permissions = [IsBeerViewer]
+    write_permissions = [IsBeerEditor]
 
-class BeerByBreweryViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
-    serializer_class = BeerSerializer
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve', 'get_beer_by_name']:
+            return [permission() for permission in self.read_permissions]
+        else:
+            return [permission() for permission in self.write_permissions]
 
-    def get_queryset(self):
-        return Beer.objects.filter(brewery=self.request.user)
+    @action(detail=False, methods=['get'], url_path='name')
+    def get_beer_by_name(self, request, beer_name=None):
+        beer = get_object_or_404(self.get_queryset(), name=beer_name)
+        serializer = self.get_serializer(beer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class BeerEditorViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsBeerEditor]
-    queryset = Beer.objects.all()
-    serializer_class = BeerSerializer
+class BreweryViewSet(viewsets.ViewSet):
+    """
+    A ViewSet to manage Brewery instances.
+    This ViewSet provides actions for different methods.
+    """
+
+    @action(detail=False, methods=['get'], url_path='')
+    def list_breweries(self, request):
+        breweries = Beer.objects.values_list('brewery', flat=True).distinct()
+        return Response(list(breweries), status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'], url_path='count')
+    def number_of_breweries(self, request):
+        count = Beer.objects.values('brewery').distinct().count()
+        return Response({"count": count}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['get'], url_path='beers')
+    def get_beers_by_brewery(self, request, brewery_name=None):
+        beers = Beer.objects.filter(brewery=brewery_name)
+        serializer = BeerSerializer(beers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

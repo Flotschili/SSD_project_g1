@@ -1,7 +1,6 @@
 # validators.py
 import re
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 
 from .validation_constants import (
     ALLOWED_BEER_TYPES,
@@ -12,7 +11,7 @@ from .validation_constants import (
 
 
 def validate_title(value: str) -> None:
-    """Validate the beer name:
+    """
     - Must not be empty.
     - Must be capitalized (first letter uppercase).
     - Must not exceed MAX_NAME_LENGTH.
@@ -32,11 +31,9 @@ def validate_title(value: str) -> None:
     if not re.match(r'^[a-zA-Z\s]*$', value):
         raise ValidationError("Name must not contain special characters.")
 
-    # Additional character checks can be added as needed.
-
 
 def validate_brewery(value: str) -> None:
-    """Validate the brewery:
+    """
     - Must not be empty.
     - Must start with a capital letter.
     - Length limit enforced.
@@ -57,7 +54,7 @@ def validate_brewery(value: str) -> None:
 
 
 def validate_description(value: str) -> None:
-    """Validate the beer description:
+    """
     - Length limit enforced.
     - Allowed characters include word chars, spaces, and selected punctuation.
     """
@@ -72,7 +69,7 @@ def validate_description(value: str) -> None:
 
 
 def validate_alcohol_content(value):
-    """Validate the alcohol content:
+    """
     - Must not be under MIN_ALCOHOL_CONTENT.
     - Must not exceed MAX_ALCOHOL_CONTENT.
     """
@@ -83,7 +80,9 @@ def validate_alcohol_content(value):
 
 
 def validate_beer_type(value: str) -> None:
-    """Validate that the beer type is within the allowed domain constants."""
+    """
+    - beer type is within the allowed domain constants.
+    """
     if value not in ALLOWED_BEER_TYPES:
         allowed = ", ".join(ALLOWED_BEER_TYPES)
         raise ValidationError(f"Beer type must be one of the following: {allowed}.")

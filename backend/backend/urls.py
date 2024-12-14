@@ -64,7 +64,7 @@ urlpatterns = [
     path('auth/', include('rest_framework.urls')),
 
     # App-specific API endpoints
-    path('api/v1/beers/', include('beers.urls')),
+    path('api/v1/', include('beers.urls')),
     path('api/v1/auth/', include('dj_rest_auth.urls')),
     path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
 ]

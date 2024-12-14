@@ -1,24 +1,17 @@
-from rest_framework import permissions
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
-
-class IsBreweryOrReadOnly(permissions.BasePermission):
+class IsBeerViewer(BasePermission):
+    """
+    Permission class that allows read-only access.
+    """
     def has_permission(self, request, view):
-        # Allow read-only access to all users
-        return True
+        return request.method in SAFE_METHODS
 
-    def has_object_permission(self, request, view, obj):
-        # Allow read-only access for safe methods
-        if request.method in permissions.SAFE_METHODS:
+class IsBeerEditor(BasePermission):
+    """
+    Permission class that requires user to have write-permissions.
+    """
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
             return True
-        # Only the brewery owner can modify the beer
-        return obj.brewery == request.user
-
-
-class IsBeerEditor(permissions.BasePermission):
-    """
-    Custom permission to only allow users in the 'beer_editors' group to edit beers.
-    """
-
-    def has_permission(self, request, view):
-        # Check if the user belongs to the 'beer_editors' group
-        return request.user.groups.filter(name='beer_editors').exists()
+        return request.user and request.user.is_staff

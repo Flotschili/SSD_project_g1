@@ -4,5 +4,16 @@ from beers.models import Beer
 
 class BeerSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('id', 'name', 'description', 'brewery', 'created_at', 'updated_at')
         model = Beer
+        fields = [
+            'id',
+            'name',
+            'brewery',
+            'description',
+            'alcohol_content',
+            'beer_type',
+            'created_at',
+            'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
