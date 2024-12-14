@@ -142,10 +142,10 @@ class AlcoholContent:
 
     @staticmethod
     def of(alcohol_content: str) -> 'AlcoholContent':
-        return AlcoholContent(float(alcohol_content))
+        return AlcoholContent(float(alcohol_content.replace(' %', '')))
 
     def __str__(self):
-        return f'{self.value}%'
+        return f'{self.value} %'
 
 
 @dataclass(frozen=True, order=True)
@@ -154,13 +154,14 @@ class ID:
 
     def __post_init__(self):
         validate_dataclass(self)
-        validate('value', self.value, min_value=0)
+        validate('value', self.value, min_value=-1)
 
     def __str__(self):
         return str(self.value)
 
     def __int__(self):
         return self.value
+
 
 @dataclass(frozen=True, order=True)
 class Beer:
@@ -172,14 +173,14 @@ class Beer:
     alcohol_content: AlcoholContent
 
     @staticmethod
-    def of(name: str, description: str, brewery: str, beer_type: str, alcohol_content: float) -> 'Beer':
+    def of(name: Name, description: Description, brewery: Brewery, beer_type: BeerType, alcohol_content: AlcoholContent) -> 'Beer':
         return Beer(
-            ID(-1),  # TODO: discuss strategy for IDs
-            Name(name),
-            Description(description),
-            Brewery(brewery),
-            BeerType(beer_type),
-            AlcoholContent(alcohol_content)
+            ID(-1),
+            name,
+            description,
+            brewery,
+            beer_type,
+            alcohol_content
         )
 
     def __eq__(self, other: object) -> bool:
