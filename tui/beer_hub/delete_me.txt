@@ -1,0 +1,10 @@
+curl --request POST \
+  --url http://localhost:8000/api/v1/auth/login/ \
+  --header 'Authorization: Basic YWRtaW46YWRtaW4=' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.2.0' \
+  --cookie 'csrftoken=xd6aXuuFVh8V9ggKw4FoItJMmqVKjsL8; sessionid=epejqxlzjy8uy9wkytitk503b20jwboe' \
+  --data '{
+	"username": "admin",
+	"password": "admin"
+}'
