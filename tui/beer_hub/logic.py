@@ -1,12 +1,69 @@
+from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
 from typing import Optional
 
-from beer_hub_client.models import Login
+from beer_hub_client import Client
+from beer_hub_client.api.auth import auth_login_create
+from beer_hub_client.api.beers import beers_create, beers_list
+from beer_hub_client.models.login import Login
+
 from beer_hub.domain import Beer, Brewery, ID, Name
+from beer_hub.mapper import beer_to_dto
+
+
+class BeerHub(metaclass=ABCMeta):
+    @abstractmethod
+    def number_of_beers(self):
+        pass
+
+    @abstractmethod
+    def get_beers(self):
+        pass
+
+    @abstractmethod
+    def get_beer_by_id(self, id: int):
+        pass
+
+    @abstractmethod
+    def get_beer_by_name(self, name: str):
+        pass
+
+    @abstractmethod
+    def add_beer(self, beer):
+        pass
+
+    @abstractmethod
+    def update_beer_by_id(self, id: int, beer: Beer):
+        pass
+
+    @abstractmethod
+    def delete_beer_by_id(self, id: int):
+        pass
+
+    @abstractmethod
+    def number_of_breweries(self):
+        pass
+
+    @abstractmethod
+    def get_breweries(self):
+        pass
+
+    @abstractmethod
+    def get_beers_by_brewery(self, brewery):
+        pass
+
+    # TODO: Requestion life choices and remove following two methods
+    @abstractmethod
+    def get_beers_by_ascending_alcohol_content(self):
+        pass
+
+    @abstractmethod
+    def get_beers_by_descending_alcohol_content(self):
+        pass
 
 
 @dataclass(frozen=True, order=True)
-class InMemoryBeerHub:
+class InMemoryBeerHub(BeerHub):
     __beers: list[Beer] = field(default_factory=list, init=False, repr=False)
 
     # only required for in-memory implementation
@@ -69,11 +126,60 @@ class InMemoryBeerHub:
         return len(self.__beers)
 
 
-def ping_backend():
-    from beer_hub_client import Client
-    from beer_hub_client.api.auth import auth_login_create
+class RESTBeerHub(BeerHub):
+    __client = None
+    __api_key: str = ''
 
-    client = Client(base_url="http://127.0.0.1:8000")
+    def __init__(self, client: Client, username: str, password: str): # TODO: make client accessible
+        # Log in into backend
+        self.__client = client
+        response = auth_login_create.sync(client=self.__client, body=Login(username=username, password=password))
+        self.__api_key = response.key
 
-    response = auth_login_create.sync(client=client, body=Login("admin", "admin"))
-    print(response)
+    @staticmethod
+    def login(client: Client, username: str, password: str) -> Client:
+        response = auth_login_create.sync(client=client, body=Login(username=username, password=password))
+        headers = {
+            "Authorization": f"Token {response.key}",
+            "Content-Type": f"application/json",
+        }
+        return Client(base_url="http://localhost:8000/api/v1", headers=headers, raise_on_unexpected_status=True)
+
+    def number_of_beers(self):
+        pass
+
+    def get_beers(self):
+        response = beers_list.sync(client=self.__client)
+        print(response)
+
+    def get_beer_by_id(self, id):
+        pass
+
+    def get_beer_by_name(self, name):
+        pass
+
+    def add_beer(self, beer: Beer):
+        dto = beer_to_dto(beer)
+        response = beers_create.sync(client=self.__client, body=dto)
+        print(response)
+
+    def update_beer_by_id(self, id, beer):
+        pass
+
+    def delete_beer_by_id(self, id):
+        pass
+
+    def number_of_breweries(self):
+        pass
+
+    def get_breweries(self):
+        pass
+
+    def get_beers_by_brewery(self, brewery):
+        pass
+
+    def get_beers_by_ascending_alcohol_content(self):
+        pass
+
+    def get_beers_by_descending_alcohol_content(self):
+        pass

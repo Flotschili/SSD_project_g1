@@ -5,7 +5,7 @@ from valid8 import validate, ValidationError
 
 from beer_hub import menu
 from beer_hub.domain import Beer, Name, Brewery, BeerType, AlcoholContent, ID, Description
-from beer_hub.logic import InMemoryBeerHub, ping_backend
+from beer_hub.logic import InMemoryBeerHub
 from beer_hub.menu import Menu, Entry
 
 
@@ -247,6 +247,7 @@ class App:
     @staticmethod
     def __ping_backend():
         ping_backend()
+        # pass
 
     @staticmethod
     def __print_beers_internal(beers: list[Beer]) -> None:
