@@ -130,6 +130,11 @@ USE_I18N = True
 
 USE_TZ = True
 
+SWAGGER_SETTINGS = {
+    'LOGIN_URL': 'rest_framework:login',
+    'LOGOUT_URL': 'rest_framework:logout'
+}
+
 
 
 # Static files (CSS, JavaScript, Images)
