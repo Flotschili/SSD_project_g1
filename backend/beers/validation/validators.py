@@ -64,10 +64,11 @@ def validate_description(value: str) -> None:
     if len(value) > MAX_DESCRIPTION_LENGTH:
         raise ValidationError(f"Description must not exceed {MAX_DESCRIPTION_LENGTH} characters.")
 
-    # Validate allowed characters: letters, digits, whitespace, and allowed punctuation
+    # Use the character set from ALLOWED_DESCRIPTION_PUNCTUATION directly
+    # The inner [] are removed because ALLOWED_DESCRIPTION_PUNCTUATION already defines a valid character set
     pattern = fr'^[\w\s{ALLOWED_DESCRIPTION_PUNCTUATION}]*$'
     if not re.match(pattern, value):
-        raise ValidationError("Description contains invalid characters.")
+        raise ValidationError(f"Description contains invalid characters: {value}")
 
 
 def validate_alcohol_content(value):

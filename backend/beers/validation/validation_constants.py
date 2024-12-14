@@ -46,4 +46,4 @@ MAX_BREWERY_LENGTH = 100
 MAX_DESCRIPTION_LENGTH = 1000
 
 # Allowed punctuation in description
-ALLOWED_DESCRIPTION_PUNCTUATION = r"[\.\,\:\;\'\"\-\!\?]"
+ALLOWED_DESCRIPTION_PUNCTUATION = r"\.\,\:\;\'\"\-\!\?"
