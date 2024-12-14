@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Beer } from '../models/Beer';
-import { BeerService } from '../services/BeerService';
+import BeerService from '../services/BeerService';
 import { Button, Container, Typography } from '@mui/material';
 
 const BeerDetail: React.FC = () => {

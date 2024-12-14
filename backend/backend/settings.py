@@ -151,7 +151,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',  # dev server
     # all other domains that we expect to do calls to this server (via the browser)
     'http://localhost:8001',  # tui
-    'http://localhost:8002',  # gui
+    'http://localhost:3000',  # gui
 ]
 
 REST_FRAMEWORK = {

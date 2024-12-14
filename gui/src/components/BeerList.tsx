@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Beer } from '../models/Beer';
-import { BeerService } from '../services/BeerService';
+import BeerService from '../services/BeerService';
 import { useNavigate } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container } from '@mui/material';
 

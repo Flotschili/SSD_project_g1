@@ -1,20 +1,37 @@
-import axios from 'axios';
-import { Beer } from '../models/Beer';
+import axiosInstance from "./axiosConfig"; // Import the configured Axios instance
 
-const API_URL = 'https://your-backend-api.com/beers';
+const BEER_API_URL = '/beers';
 
-export const BeerService = {
-  async getBeers(): Promise<Beer[]> {
-    const response = await axios.get<Beer[]>(API_URL);
+class BeerService {
+  async getBeers() {
+    const response = await axiosInstance.get(BEER_API_URL);
+
     return response.data;
-  },
+  }
 
-  async getBeer(id: number): Promise<Beer> {
-    const response = await axios.get<Beer>(`${API_URL}/${id}`);
+  async getBeer(id: number) {
+    const response = await axiosInstance.get(`${BEER_API_URL}/${id}`);
+
     return response.data;
-  },
+  }
 
-  async updateBeer(beer: Beer): Promise<void> {
-    await axios.put(`${API_URL}/${beer.id}`, beer);
-  },
-};
+  async createBeer(beerData: any) {
+    const response = await axiosInstance.post(BEER_API_URL, beerData);
+
+    return response.data;
+  }
+
+  async updateBeer(id: number, beerData: any) {
+    const response = await axiosInstance.put(`${BEER_API_URL}/${id}`, beerData);
+
+    return response.data;
+  }
+
+  async deleteBeer(id: number) {
+    const response = await axiosInstance.delete(`${BEER_API_URL}/${id}`);
+
+    return response.data;
+  }
+}
+
+export default new BeerService();
