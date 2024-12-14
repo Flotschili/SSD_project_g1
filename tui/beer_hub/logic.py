@@ -4,61 +4,62 @@ from typing import Optional
 
 from beer_hub_client import Client
 from beer_hub_client.api.auth import auth_login_create
-from beer_hub_client.api.beers import beers_create, beers_list
+from beer_hub_client.api.beers import beers_create, beers_list, beers_read, beers_get_beer_by_name, \
+    beers_get_beer_by_name_2
 from beer_hub_client.models.login import Login
 
 from beer_hub.domain import Beer, Brewery, ID, Name
-from beer_hub.mapper import beer_to_dto
+from beer_hub.mapper import beer_to_dto, dto_list_to_beer_list, dto_to_beer
 
 
 class BeerHub(metaclass=ABCMeta):
     @abstractmethod
-    def number_of_beers(self):
+    def number_of_beers(self) -> int:
         pass
 
     @abstractmethod
-    def get_beers(self):
+    def get_beers(self) -> list[Beer]:
         pass
 
     @abstractmethod
-    def get_beer_by_id(self, id: int):
+    def get_beer_by_id(self, id: ID) -> Optional[Beer]:
         pass
 
     @abstractmethod
-    def get_beer_by_name(self, name: str):
+    def get_beer_by_name(self, name: str) -> Optional[Beer]:
         pass
 
     @abstractmethod
-    def add_beer(self, beer):
+    def add_beer(self, beer) -> None:
         pass
 
     @abstractmethod
-    def update_beer_by_id(self, id: int, beer: Beer):
+    def update_beer_by_id(self, id: ID, beer: Beer) -> None:
         pass
 
     @abstractmethod
-    def delete_beer_by_id(self, id: int):
+    def delete_beer_by_id(self, id: ID) -> None:
         pass
 
     @abstractmethod
-    def number_of_breweries(self):
+    def number_of_breweries(self) -> int:
         pass
 
     @abstractmethod
-    def get_breweries(self):
+    def get_breweries(self) -> list[Brewery]:
         pass
 
     @abstractmethod
-    def get_beers_by_brewery(self, brewery):
+    def get_beers_by_brewery(self, brewery: Brewery) -> list[Beer]:
         pass
 
     # TODO: Requestion life choices and remove following two methods
     @abstractmethod
-    def get_beers_by_ascending_alcohol_content(self):
+    def get_beers_by_ascending_alcohol_content(self) -> list[Beer]:
         pass
 
     @abstractmethod
-    def get_beers_by_descending_alcohol_content(self):
+    def get_beers_by_descending_alcohol_content(self) -> list[Beer]:
         pass
 
 
@@ -128,58 +129,67 @@ class InMemoryBeerHub(BeerHub):
 
 class RESTBeerHub(BeerHub):
     __client = None
-    __api_key: str = ''
 
-    def __init__(self, client: Client, username: str, password: str): # TODO: make client accessible
-        # Log in into backend
+    def __init__(self, client: Client):
         self.__client = client
-        response = auth_login_create.sync(client=self.__client, body=Login(username=username, password=password))
-        self.__api_key = response.key
 
     @staticmethod
     def login(client: Client, username: str, password: str) -> Client:
         response = auth_login_create.sync(client=client, body=Login(username=username, password=password))
         headers = {
-            "Authorization": f"Token {response.key}",
-            "Content-Type": f"application/json",
+            "Authorization": f"Token {response.key}"
         }
-        return Client(base_url="http://localhost:8000/api/v1", headers=headers, raise_on_unexpected_status=True)
+        return client.with_headers(headers)
 
-    def number_of_beers(self):
-        pass
+    def number_of_beers(self) -> int:
+        return len(self.get_beers())
 
-    def get_beers(self):
+    def get_beers(self) -> list[Beer]:
         response = beers_list.sync(client=self.__client)
-        print(response)
+        return dto_list_to_beer_list(response)
 
-    def get_beer_by_id(self, id):
-        pass
+    def get_beer_by_id(self, id: ID) -> Optional[Beer]:
+        response = beers_read.sync(client=self.__client, id=id.value)
+        return dto_to_beer(response)
 
-    def get_beer_by_name(self, name):
-        pass
+    def get_beer_by_name(self, name: Name) -> Optional[Beer]:
+        response = beers_get_beer_by_name_2.sync(client=self.__client, beer_name=name.value)
+        return dto_to_beer(response[0] if len(response) > 0 else None) # First or None
 
-    def add_beer(self, beer: Beer):
+    def add_beer(self, beer: Beer) -> None:
         dto = beer_to_dto(beer)
-        response = beers_create.sync(client=self.__client, body=dto)
-        print(response)
+        beers_create.sync(client=self.__client, body=dto)
 
-    def update_beer_by_id(self, id, beer):
+    def update_beer_by_id(self, id: ID, beer: Beer) -> None:
         pass
 
-    def delete_beer_by_id(self, id):
+    def delete_beer_by_id(self, id: ID) -> None:
         pass
 
-    def number_of_breweries(self):
+    def number_of_breweries(self) -> int:
         pass
 
-    def get_breweries(self):
+    def get_breweries(self) -> list[Brewery]:
         pass
 
-    def get_beers_by_brewery(self, brewery):
+    def get_beers_by_brewery(self, brewery: Brewery) -> list[Beer]:
         pass
 
-    def get_beers_by_ascending_alcohol_content(self):
+    def get_beers_by_ascending_alcohol_content(self) -> list[Beer]:
         pass
 
-    def get_beers_by_descending_alcohol_content(self):
+    def get_beers_by_descending_alcohol_content(self) -> list[Beer]:
         pass
+
+if __name__ == '__main__':
+    client = Client(base_url="http://localhost:8000/api/v1", raise_on_unexpected_status=True)
+
+    authenticated_client = RESTBeerHub.login(client, "admin", "admin")
+
+    bh = RESTBeerHub(authenticated_client)
+
+    # beer = Beer(0, "Birra", "Märzen", "Halo", "Märzen", 1.0)
+    #
+    # bh.add_beer(beer)
+    print(bh.get_beers())
+    print(bh.get_beer_by_id(ID(1)))

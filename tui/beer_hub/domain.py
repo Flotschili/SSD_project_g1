@@ -183,6 +183,17 @@ class Beer:
             alcohol_content
         )
 
+    @staticmethod
+    def parse(id: int, name: str, description: str, brewery: str, beer_type: str, alcohol_content: str) -> 'Beer':
+        return Beer(
+            ID(id),
+            Name(name),
+            Description(description),
+            Brewery(brewery),
+            BeerType(beer_type),
+            AlcoholContent.of(alcohol_content)
+        )
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Beer):
             return NotImplemented

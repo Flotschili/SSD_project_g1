@@ -52,7 +52,7 @@ Add following to components/schemas:
     LoginKey:
       type: object
       properties:
-        username:
+        key:
           title: Key
           type: string
 ```

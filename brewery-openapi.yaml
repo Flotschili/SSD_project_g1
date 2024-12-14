@@ -275,6 +275,9 @@ paths:
     get:
       tags:
         - beers
+      description: |-
+        A ViewSet to manage Beer instances.
+        This ViewSet provides actions for different methods.
       operationId: beers_list
       responses:
         "200":
@@ -288,6 +291,9 @@ paths:
     post:
       tags:
         - beers
+      description: |-
+        A ViewSet to manage Beer instances.
+        This ViewSet provides actions for different methods.
       operationId: beers_create
       requestBody:
         content:
@@ -303,11 +309,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Beer'
       x-codegen-request-body-name: data
-  /beers/by-brewery/:
+  /beers/name/:
     get:
       tags:
         - beers
-      operationId: beers_by-brewery_list
+      description: |-
+        A ViewSet to manage Beer instances.
+        This ViewSet provides actions for different methods.
+      operationId: beers_get_beer_by_name
       responses:
         "200":
           description: ""
@@ -317,109 +326,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Beer'
-    post:
-      tags:
-        - beers
-      operationId: beers_by-brewery_create
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Beer'
-        required: true
-      responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Beer'
-      x-codegen-request-body-name: data
-  /beers/by-brewery/{id}/:
+  /beers/name/{beer_name}/:
     get:
       tags:
         - beers
-      operationId: beers_by-brewery_read
+      description: |-
+        A ViewSet to manage Beer instances.
+        This ViewSet provides actions for different methods.
+      operationId: beers_get_beer_by_name_2
       parameters:
-        - name: id
+        - name: beer_name
           in: path
           required: true
           schema:
             type: string
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Beer'
-    put:
-      tags:
-        - beers
-      operationId: beers_by-brewery_update
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Beer'
-        required: true
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Beer'
-      x-codegen-request-body-name: data
-    delete:
-      tags:
-        - beers
-      operationId: beers_by-brewery_delete
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "204":
-          description: ""
-          content: {}
-    patch:
-      tags:
-        - beers
-      operationId: beers_by-brewery_partial_update
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Beer'
-        required: true
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Beer'
-      x-codegen-request-body-name: data
-  /beers/editor/:
-    get:
-      tags:
-        - beers
-      operationId: beers_editor_list
       responses:
         "200":
           description: ""
@@ -429,112 +349,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Beer'
-    post:
-      tags:
-        - beers
-      operationId: beers_editor_create
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Beer'
-        required: true
-      responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Beer'
-      x-codegen-request-body-name: data
-  /beers/editor/{id}/:
-    get:
-      tags:
-        - beers
-      operationId: beers_editor_read
-      parameters:
-        - name: id
-          in: path
-          description: A unique integer value identifying this beer.
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Beer'
-    put:
-      tags:
-        - beers
-      operationId: beers_editor_update
-      parameters:
-        - name: id
-          in: path
-          description: A unique integer value identifying this beer.
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Beer'
-        required: true
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Beer'
-      x-codegen-request-body-name: data
-    delete:
-      tags:
-        - beers
-      operationId: beers_editor_delete
-      parameters:
-        - name: id
-          in: path
-          description: A unique integer value identifying this beer.
-          required: true
-          schema:
-            type: integer
-      responses:
-        "204":
-          description: ""
-          content: {}
-    patch:
-      tags:
-        - beers
-      operationId: beers_editor_partial_update
-      parameters:
-        - name: id
-          in: path
-          description: A unique integer value identifying this beer.
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Beer'
-        required: true
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Beer'
-      x-codegen-request-body-name: data
   /beers/{id}/:
     get:
       tags:
         - beers
+      description: |-
+        A ViewSet to manage Beer instances.
+        This ViewSet provides actions for different methods.
       operationId: beers_read
       parameters:
         - name: id
@@ -553,6 +374,9 @@ paths:
     put:
       tags:
         - beers
+      description: |-
+        A ViewSet to manage Beer instances.
+        This ViewSet provides actions for different methods.
       operationId: beers_update
       parameters:
         - name: id
@@ -578,6 +402,9 @@ paths:
     delete:
       tags:
         - beers
+      description: |-
+        A ViewSet to manage Beer instances.
+        This ViewSet provides actions for different methods.
       operationId: beers_delete
       parameters:
         - name: id
@@ -593,6 +420,9 @@ paths:
     patch:
       tags:
         - beers
+      description: |-
+        A ViewSet to manage Beer instances.
+        This ViewSet provides actions for different methods.
       operationId: beers_partial_update
       parameters:
         - name: id
@@ -615,6 +445,48 @@ paths:
               schema:
                 $ref: '#/components/schemas/Beer'
       x-codegen-request-body-name: data
+  /breweries/:
+    get:
+      tags:
+        - list_breweries
+      description: |-
+        A ViewSet to manage Brewery instances.
+        This ViewSet provides actions for different methods.
+      operationId: list_breweries
+      responses:
+        "200":
+          description: ""
+          content: {}
+  /breweries/count/:
+    get:
+      tags:
+        - breweries
+      description: |-
+        A ViewSet to manage Brewery instances.
+        This ViewSet provides actions for different methods.
+      operationId: breweries_number_of_breweries
+      responses:
+        "200":
+          description: ""
+          content: {}
+  /breweries/{brewery_name}/beers/:
+    get:
+      tags:
+        - breweries
+      description: |-
+        A ViewSet to manage Brewery instances.
+        This ViewSet provides actions for different methods.
+      operationId: breweries_get_beers_by_brewery
+      parameters:
+        - name: brewery_name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content: {}
 components:
   schemas:
     LoginKey:
@@ -746,29 +618,31 @@ components:
           type: integer
           readOnly: true
         username:
-          title: Benutzername
+          title: Username
           maxLength: 150
           minLength: 1
           pattern: "^[\\w.@+-]+$"
           type: string
-          description: "Erforderlich. 150 Zeichen oder weniger. Nur Buchstaben, Ziffern\
-            \ und @/./+/-/_."
+          description: "Required. 150 characters or fewer. Letters, digits and @/./+/-/_\
+            \ only."
         email:
-          title: E-Mail-Adresse
+          title: Email address
           minLength: 1
           type: string
           format: email
           readOnly: true
         first_name:
-          title: Vorname
+          title: First name
           maxLength: 150
           type: string
         last_name:
-          title: Nachname
+          title: Last name
           maxLength: 150
           type: string
     Beer:
       required:
+        - alcohol_content
+        - beer_type
         - brewery
         - description
         - name
@@ -784,17 +658,28 @@ components:
           minLength: 1
           type: string
           description: The name of the beer (capitalized)
-        description:
-          title: Description
-          minLength: 1
-          type: string
-          description: A description of the beer
         brewery:
           title: Brewery
           maxLength: 100
           minLength: 1
           type: string
           description: Name of the brewery
+        description:
+          title: Description
+          minLength: 1
+          type: string
+          description: A description of the beer
+        alcohol_content:
+          title: Alcohol content
+          type: string
+          description: Alcohol by volume percentage (0.00 to 75.00).
+          format: decimal
+        beer_type:
+          title: Beer type
+          maxLength: 100
+          minLength: 1
+          type: string
+          description: Type of the beer
         created_at:
           title: Created at
           type: string
