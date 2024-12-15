@@ -22,23 +22,19 @@ class App:
             self.__selected_hub = InMemoryBeerHub()
 
         def create_rest_hub():
-            # login loop
             client = Client(base_url=BASE_URL, raise_on_unexpected_status=True)
             authenticated_client = None
 
+            # login loop
             while authenticated_client is None:
                 username = self.__read('Username', str)
                 password = self.__read('Password', str)
                 authenticated_client = RESTBeerHub.login(client, username, password)
+
                 if authenticated_client is None:
                     print("Invalid Credentials! Try again.")
 
-            try:
-                client = Client(base_url=BASE_URL, raise_on_unexpected_status=True)
-                authenticated_client = RESTBeerHub.login(client, username, password)
-                self.__selected_hub = RESTBeerHub(authenticated_client)
-            except Exception as e:
-                print(f"Failed to create REST BeerHub: {str(e)}")
+            self.__selected_hub = RESTBeerHub(authenticated_client)
 
         hub_selection_menu = Menu.Builder(menu.Description('Select BeerHub Implementation'), auto_select=lambda: None) \
             .with_entry(Entry.create('1', 'InMemory BeerHub',
@@ -61,7 +57,7 @@ class App:
         return self.__selected_hub
 
     def __create_main_menu(self):
-        return Menu.Builder(menu.Description('BeerHub'), auto_select=lambda: self.__after_action()) \
+        return Menu.Builder(menu.Description('BeerHub'))\
             .with_entry(Entry.create('1', 'List all beers',
                                      on_selected=lambda: self.__print_beers())) \
             .with_entry(Entry.create('2', 'Add beer',
@@ -293,6 +289,3 @@ class App:
     def __print_breweries(self):
         breweries = self.__beer_hub.get_breweries()
         self.__print_breweries_internal(breweries)
-
-    def __after_action(self):
-        pass

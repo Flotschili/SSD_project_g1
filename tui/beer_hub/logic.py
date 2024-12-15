@@ -190,9 +190,13 @@ class RESTBeerHub(BeerHub):
         response = breweries_get_beers_by_brewery.sync_detailed(client=self.__client, brewery_name=brewery.value)
         decoded_content = response.content.decode('utf-8')
         parsed_content = json.loads(decoded_content)
-        return [Beer.parse(id=beer_dict['id'], name=beer_dict['name'], description=beer_dict['description'],
-                                    brewery=beer_dict['brewery'], beer_type=beer_dict['beer_type'],
-                                    alcohol_content=beer_dict['alcohol_content']) for beer_dict in parsed_content]
+        return [Beer.parse(id=beer_dict['id'],
+                           name=beer_dict['name'],
+                           description=beer_dict['description'],
+                           brewery=beer_dict['brewery'],
+                           beer_type=beer_dict['beer_type'],
+                           alcohol_content=beer_dict['alcohol_content'])
+                for beer_dict in parsed_content]
 
     def get_beers_by_ascending_alcohol_content(self) -> list[Beer]:
         beers = self.get_beers()
