@@ -1,14 +1,10 @@
-import json
-
-import pytest
+import math
 from unittest.mock import MagicMock, patch
 
+import pytest
 from beer_hub_client.errors import UnexpectedStatus
-
-from beer_hub.domain import *
+from beer_hub.domain import Beer, ID, Name, Description, Brewery, BeerType, AlcoholContent
 from beer_hub.logic import RESTBeerHub, InMemoryBeerHub
-from beer_hub_client import models
-
 from beer_hub.mapper import beer_to_dto
 
 # Sample beers for testing
@@ -155,8 +151,8 @@ def test_get_beers_by_ascending_alcohol_content(rest_beer_hub):
                       return_value=[MagicMock(alcohol_content=5.5), MagicMock(alcohol_content=4.5)]):
         beers = rest_beer_hub.get_beers_by_ascending_alcohol_content()
 
-        assert beers[0].alcohol_content == 4.5
-        assert beers[1].alcohol_content == 5.5
+        assert math.isclose(beers[0].alcohol_content, 4.5, rel_tol=1e-9)
+        assert math.isclose(beers[1].alcohol_content, 5.5, rel_tol=1e-9)
 
 
 def test_get_beers_by_descending_alcohol_content(rest_beer_hub):
@@ -164,8 +160,8 @@ def test_get_beers_by_descending_alcohol_content(rest_beer_hub):
                       return_value=[MagicMock(alcohol_content=4.5), MagicMock(alcohol_content=5.5)]):
         beers = rest_beer_hub.get_beers_by_descending_alcohol_content()
 
-        assert beers[0].alcohol_content == 5.5
-        assert beers[1].alcohol_content == 4.5
+        assert math.isclose(beers[0].alcohol_content, 5.5, rel_tol=1e-9)
+        assert math.isclose(beers[1].alcohol_content, 4.5, rel_tol=1e-9)
 
 
 # Additional tests for InMemoryBeerHub
@@ -181,7 +177,7 @@ def test_get_beer_by_name_in_memory():
 def test_update_beer_by_id_in_memory():
     beer_hub = InMemoryBeerHub()
     test_beer = Beer(ID(1), Name("Beer One"), Description("description"), Brewery("Brewery"),
-                        BeerType("Ale"), AlcoholContent(6.0))
+                     BeerType("Ale"), AlcoholContent(6.0))
     beer_hub.add_beer(test_beer)
 
     updated_beer = Beer(ID(1), Name("Updated Beer One"), Description("Updated description"), Brewery("Updated Brewery"),
@@ -200,6 +196,7 @@ def test_get_beers_by_ascending_alcohol_content_in_memory():
 
     assert sorted_beers[0].alcohol_content < sorted_beers[1].alcohol_content
 
+
 def test_get_beers_by_descending_alcohol_content_in_memory():
     beer_hub = InMemoryBeerHub()
     [beer_hub.add_beer(beer) for beer in test_beers]
@@ -207,6 +204,7 @@ def test_get_beers_by_descending_alcohol_content_in_memory():
     sorted_beers = beer_hub.get_beers_by_descending_alcohol_content()
 
     assert sorted_beers[0].alcohol_content > sorted_beers[1].alcohol_content
+
 
 def test_add_beer_with_unknown_id():
     beer_hub = InMemoryBeerHub()
@@ -219,11 +217,13 @@ def test_add_beer_with_unknown_id():
 
     assert beer == test_beer
 
+
 def test_number_of_beers_in_memory():
     beer_hub = InMemoryBeerHub()
     [beer_hub.add_beer(beer) for beer in test_beers]
 
     assert beer_hub.number_of_beers() == len(test_beers)
+
 
 def test_get_beers_in_memory():
     beer_hub = InMemoryBeerHub()
@@ -233,11 +233,13 @@ def test_get_beers_in_memory():
 
     assert returned_beers == test_beers
 
+
 def test_number_of_breweries_in_memory():
     beer_hub = InMemoryBeerHub()
     [beer_hub.add_beer(beer) for beer in test_beers]
 
     assert beer_hub.number_of_breweries() == 2
+
 
 def test_get_breweries_in_memory():
     beer_hub = InMemoryBeerHub()
@@ -248,6 +250,7 @@ def test_get_breweries_in_memory():
     assert len(breweries) == 2
     assert test_beers[0].brewery in breweries
     assert test_beers[1].brewery in breweries
+
 
 def test_get_beers_by_brewery_in_memory():
     beer_hub = InMemoryBeerHub()
