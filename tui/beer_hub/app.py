@@ -22,8 +22,17 @@ class App:
             self.__selected_hub = InMemoryBeerHub()
 
         def create_rest_hub():
-            username = self.__read('Username', str)
-            password = self.__read('Password', str)
+            # login loop
+            client = Client(base_url=BASE_URL, raise_on_unexpected_status=True)
+            authenticated_client = None
+
+            while authenticated_client is None:
+                username = self.__read('Username', str)
+                password = self.__read('Password', str)
+                authenticated_client = RESTBeerHub.login(client, username, password)
+                if authenticated_client is None:
+                    print("Invalid Credentials! Try again.")
+
             try:
                 client = Client(base_url=BASE_URL, raise_on_unexpected_status=True)
                 authenticated_client = RESTBeerHub.login(client, username, password)

@@ -9,6 +9,7 @@ from beer_hub_client.api.beers import beers_create, beers_list, beers_read, beer
     beers_get_beer_by_name_2, beers_update, beers_delete
 from beer_hub_client.api.breweries import breweries_number_of_breweries, breweries_get_beers_by_brewery
 from beer_hub_client.api.list_breweries import list_breweries
+from beer_hub_client.errors import UnexpectedStatus
 from beer_hub_client.models.login import Login
 
 from beer_hub.domain import Beer, Brewery, ID, Name
@@ -136,12 +137,15 @@ class RESTBeerHub(BeerHub):
         self.__client = client
 
     @staticmethod
-    def login(client: Client, username: str, password: str) -> Client:
-        response = auth_login_create.sync(client=client, body=Login(username=username, password=password))
-        headers = {
-            "Authorization": f"Token {response.key}"
-        }
-        return client.with_headers(headers)
+    def login(client: Client, username: str, password: str) -> Optional[Client]:
+        try:
+            response = auth_login_create.sync(client=client, body=Login(username=username, password=password))
+            headers = {
+                "Authorization": f"Token {response.key}"
+            }
+            return client.with_headers(headers)
+        except UnexpectedStatus:
+            return None
 
     def number_of_beers(self) -> int:
         return len(self.get_beers())
