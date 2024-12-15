@@ -16,7 +16,7 @@ from beer_hub.domain import Beer, Brewery, ID, Name
 from beer_hub.mapper import beer_to_dto, dto_list_to_beer_list, dto_to_beer
 
 
-class BeerHub(metaclass=ABCMeta):
+class BeerHub(metaclass=ABCMeta): # pragma: no cover
     @abstractmethod
     def number_of_beers(self) -> int:
         pass
@@ -122,12 +122,6 @@ class InMemoryBeerHub(BeerHub):
     def get_beers_by_descending_alcohol_content(self) -> list[Beer]:
         self.__beers.sort(key=lambda beer: beer.alcohol_content, reverse=True)
         return self.__beers
-
-    def __iter__(self):
-        return iter(self.__beers)
-
-    def __len__(self):
-        return len(self.__beers)
 
 
 class RESTBeerHub(BeerHub):

@@ -2,7 +2,7 @@
 name = "tui"
 version = "0.1.0"
 description = ""
-authors = ["Flotschi <tanicruzzer2@gmail.com>"]
+authors = ["Flotschi, Simon"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -10,6 +10,8 @@ python = "^3.9"
 valid8 = "^5.1.2"
 typeguard = "^4.4.1"
 beer-hub-client = {path = "beer-hub-client"}
+pytest = "^8.3.4"
+pytest-cov = "^6.0.0"
 
 
 [build-system]
