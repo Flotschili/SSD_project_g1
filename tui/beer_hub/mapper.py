@@ -7,11 +7,11 @@ def beer_to_dto(beer: domain.Beer) -> Optional[models.beer.Beer]:
         return None
 
     return models.beer.Beer(
-        name=beer.name,
-        description=beer.description,
-        brewery=beer.brewery,
-        beer_type=beer.beer_type,
-        alcohol_content=beer.alcohol_content
+        name=beer.name.value,
+        description=beer.description.value,
+        brewery=beer.brewery.value,
+        beer_type=beer.beer_type.value,
+        alcohol_content=beer.alcohol_content.value
     )
 
 def dto_to_beer(dto: models.beer.Beer) -> Optional[domain.Beer]:

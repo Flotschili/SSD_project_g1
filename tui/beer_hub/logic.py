@@ -1,3 +1,4 @@
+import json
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
 from typing import Optional
@@ -5,7 +6,9 @@ from typing import Optional
 from beer_hub_client import Client
 from beer_hub_client.api.auth import auth_login_create
 from beer_hub_client.api.beers import beers_create, beers_list, beers_read, beers_get_beer_by_name, \
-    beers_get_beer_by_name_2
+    beers_get_beer_by_name_2, beers_update, beers_delete
+from beer_hub_client.api.breweries import breweries_number_of_breweries, breweries_get_beers_by_brewery
+from beer_hub_client.api.list_breweries import list_breweries
 from beer_hub_client.models.login import Login
 
 from beer_hub.domain import Beer, Brewery, ID, Name
@@ -30,7 +33,7 @@ class BeerHub(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def add_beer(self, beer) -> None:
+    def add_beer(self, beer: Beer) -> None:
         pass
 
     @abstractmethod
@@ -53,7 +56,6 @@ class BeerHub(metaclass=ABCMeta):
     def get_beers_by_brewery(self, brewery: Brewery) -> list[Beer]:
         pass
 
-    # TODO: Requestion life choices and remove following two methods
     @abstractmethod
     def get_beers_by_ascending_alcohol_content(self) -> list[Beer]:
         pass
@@ -154,42 +156,46 @@ class RESTBeerHub(BeerHub):
 
     def get_beer_by_name(self, name: Name) -> Optional[Beer]:
         response = beers_get_beer_by_name_2.sync(client=self.__client, beer_name=name.value)
-        return dto_to_beer(response[0] if len(response) > 0 else None) # First or None
+        return dto_to_beer(response[0] if len(response) > 0 else None)  # First or None
 
     def add_beer(self, beer: Beer) -> None:
         dto = beer_to_dto(beer)
         beers_create.sync(client=self.__client, body=dto)
 
     def update_beer_by_id(self, id: ID, beer: Beer) -> None:
-        pass
+        dto = beer_to_dto(beer)
+        beers_update.sync(client=self.__client, id=id.value, body=dto)
 
     def delete_beer_by_id(self, id: ID) -> None:
-        pass
+        beers_delete.sync_detailed(client=self.__client, id=id.value)
 
     def number_of_breweries(self) -> int:
-        pass
+        response = breweries_number_of_breweries.sync_detailed(client=self.__client)
+        # expected response content: b'{"count":int}'
+        decoded_content = response.content.decode('utf-8')
+        parsed_content = json.loads(decoded_content)
+        return parsed_content["count"]
 
     def get_breweries(self) -> list[Brewery]:
-        pass
+        response = list_breweries.sync_detailed(client=self.__client)
+        decoded_content = response.content.decode('utf-8')
+        parsed_content = json.loads(decoded_content)
+        return [Brewery(brewery) for brewery in parsed_content]
 
     def get_beers_by_brewery(self, brewery: Brewery) -> list[Beer]:
-        pass
+        response = breweries_get_beers_by_brewery.sync_detailed(client=self.__client, brewery_name=brewery.value)
+        decoded_content = response.content.decode('utf-8')
+        parsed_content = json.loads(decoded_content)
+        return [Beer.parse(id=beer_dict['id'], name=beer_dict['name'], description=beer_dict['description'],
+                                    brewery=beer_dict['brewery'], beer_type=beer_dict['beer_type'],
+                                    alcohol_content=beer_dict['alcohol_content']) for beer_dict in parsed_content]
 
     def get_beers_by_ascending_alcohol_content(self) -> list[Beer]:
-        pass
+        beers = self.get_beers()
+        beers.sort(key=lambda beer: beer.alcohol_content)
+        return beers
 
     def get_beers_by_descending_alcohol_content(self) -> list[Beer]:
-        pass
-
-if __name__ == '__main__':
-    client = Client(base_url="http://localhost:8000/api/v1", raise_on_unexpected_status=True)
-
-    authenticated_client = RESTBeerHub.login(client, "admin", "admin")
-
-    bh = RESTBeerHub(authenticated_client)
-
-    # beer = Beer(0, "Birra", "Märzen", "Halo", "Märzen", 1.0)
-    #
-    # bh.add_beer(beer)
-    print(bh.get_beers())
-    print(bh.get_beer_by_id(ID(1)))
+        beers = self.get_beers()
+        beers.sort(key=lambda beer: beer.alcohol_content, reverse=True)
+        return beers
