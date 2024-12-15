@@ -12,4 +12,4 @@ class IsBeerEditor(BasePermission):
     Permission class that requires user to have write-permissions.
     """
     def has_permission(self, request, view):
-        return request.user.groups.filter(name='beer_editor').exists()
+        return request.user.groups.filter(name='beer_editor').exists() or request.user.is_superuser
