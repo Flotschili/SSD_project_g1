@@ -56,3 +56,11 @@ class Beer(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['name', 'brewery', 'beer_type'],
+                name='unique_beer_constraint'
+            )
+        ]
