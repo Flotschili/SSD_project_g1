@@ -42,9 +42,7 @@ class BeerViewSet(viewsets.ModelViewSet):
             beer_name (str): The name of the beer to retrieve.
 
         Returns:
-            Response: HTTP 200 status with Beer Data,
-                      404 if no beer found
-                      400 if beer_name parameter is missing
+            Response: HTTP 200 status with Beer Data
         """
         beers = self.queryset.filter(name__icontains=beer_name)
         serializer = self.get_serializer(beers, many=True)

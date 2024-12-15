@@ -21,8 +21,5 @@ class BeerSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         beer = Beer(**attrs)
-        try:
-            beer.clean()
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
+        beer.clean()
         return attrs

@@ -65,6 +65,54 @@ class TestBeerOperations:
         assert response.status_code == HTTP_201_CREATED
         assert response.data["name"] == valid_beer_args["name"]
 
+    def test_add_beer_nonalcoholic_fails(self, client_with_admin, valid_beer_args):
+        url = reverse("beer-list")
+        invalid_args = {
+            'name': 'Valid Beer Name',
+            'brewery': 'Valid Brewery',
+            'description': 'A valid description.',
+            'alcohol_content': '0.6',
+            'beer_type': 'Non-Alcoholic Beer'
+        }
+        response = client_with_admin.post(url, invalid_args, format="json")
+        assert response.status_code == HTTP_400_BAD_REQUEST
+
+    def test_add_beer_nonalcoholic_passes(self, client_with_admin, valid_beer_args):
+        url = reverse("beer-list")
+        invalid_args = {
+            'name': 'Valid Beer Name',
+            'brewery': 'Valid Brewery',
+            'description': 'A valid description.',
+            'alcohol_content': '0.5',
+            'beer_type': 'Non-Alcoholic Beer'
+        }
+        response = client_with_admin.post(url, invalid_args, format="json")
+        assert response.status_code == HTTP_201_CREATED
+
+    def test_add_beer_alcoholfree_fails(self, client_with_admin, valid_beer_args):
+        url = reverse("beer-list")
+        invalid_args = {
+            'name': 'Valid Beer Name',
+            'brewery': 'Valid Brewery',
+            'description': 'A valid description.',
+            'alcohol_content': '0.1',
+            'beer_type': 'Alcohol-Free Wheat Beer'
+        }
+        response = client_with_admin.post(url, invalid_args, format="json")
+        assert response.status_code == HTTP_400_BAD_REQUEST
+
+    def test_add_beer_alcoholfree_passes(self, client_with_admin, valid_beer_args):
+        url = reverse("beer-list")
+        invalid_args = {
+            'name': 'Valid Beer Name',
+            'brewery': 'Valid Brewery',
+            'description': 'A valid description.',
+            'alcohol_content': '0.0',
+            'beer_type': 'Alcohol-Free Wheat Beer'
+        }
+        response = client_with_admin.post(url, invalid_args, format="json")
+        assert response.status_code == HTTP_201_CREATED
+
     def test_edit_beer(self, client_with_admin, beer, valid_beer_args):
         url = reverse("beer-detail", args=[beer.id])
         valid_beer_args["name"] = "Updated Beer"
