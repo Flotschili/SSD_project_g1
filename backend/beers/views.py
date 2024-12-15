@@ -1,12 +1,14 @@
-from pickle import FALSE
-
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_list_or_404
 from .models import Beer
 from .serializers import BeerSerializer
 from .permissions import IsBeerViewer, IsBeerEditor
+
+# permissions
+read_permissions = [IsBeerViewer]
+write_permissions = [IsBeerEditor]
 
 class BeerViewSet(viewsets.ModelViewSet):
     """
@@ -17,20 +19,16 @@ class BeerViewSet(viewsets.ModelViewSet):
     queryset = Beer.objects.all()
     serializer_class = BeerSerializer
 
-    # permissions
-    read_permissions = [IsBeerViewer]
-    write_permissions = [IsBeerEditor]
-
     def get_permissions(self):
         if self.action in ['list', 'retrieve', 'get_beer_by_name']:
-            return [permission() for permission in self.read_permissions]
+            return [permission() for permission in read_permissions]
         else:
-            return [permission() for permission in self.write_permissions]
+            return [permission() for permission in write_permissions]
 
     @action(detail=False, methods=['get'], url_path='name')
     def get_beer_by_name(self, request, beer_name=None):
-        beer = get_object_or_404(self.get_queryset(), name=beer_name)
-        serializer = self.get_serializer(beer)
+        beer = get_list_or_404(self.get_queryset(), name=beer_name)
+        serializer = self.get_serializer(beer, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -39,6 +37,10 @@ class BreweryViewSet(viewsets.ViewSet):
     A ViewSet to manage Brewery instances.
     This ViewSet provides actions for different methods.
     """
+
+    def get_permissions(self):
+        return [permission() for permission in read_permissions]
+
 
     @action(detail=False, methods=['get'], url_path='')
     def list_breweries(self, request):

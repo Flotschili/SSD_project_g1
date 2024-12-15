@@ -22,8 +22,16 @@ class App:
             self.__selected_hub = InMemoryBeerHub()
 
         def create_rest_hub():
-            username = self.__read('Username', str)
-            password = self.__read('Password', str)
+            # login loop
+            client = Client(base_url=BASE_URL, raise_on_unexpected_status=True)
+            authenticated_client = None
+
+            while authenticated_client is None:
+                username = self.__read('Username', str)
+                password = self.__read('Password', str)
+                authenticated_client = RESTBeerHub.login(client, username, password)
+                if authenticated_client is None:
+                    print("Invalid Credentials! Try again.")
 
             try:
                 client = Client(base_url=BASE_URL, raise_on_unexpected_status=True)
@@ -70,8 +78,6 @@ class App:
                                      on_selected=lambda: self.__sort_submenu())) \
             .with_entry(Entry.create('8', 'Statistics',
                                      on_selected=lambda: self.__statistics_submenu())) \
-            .with_entry(Entry.create('9', 'Ping backend',
-                                     on_selected=lambda: self.__ping_backend())) \
             .with_entry(Entry.create('0', 'Exit',
                                      on_selected=lambda: print('Bye!'),
                                      is_exit=True)) \
@@ -245,11 +251,6 @@ class App:
     def __print_beers_sorted_by_descending_alcohol_content(self):
         beers = self.__beer_hub.get_beers_by_descending_alcohol_content()
         self.__print_beers_internal(beers)
-
-    @staticmethod
-    def __ping_backend():
-        ping_backend()
-        # pass
 
     @staticmethod
     def __print_beers_internal(beers: list[Beer]) -> None:

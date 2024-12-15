@@ -14,7 +14,7 @@ brewery_urls = [
 ]
 
 # Manual path for get_beer_by_name
-get_beer_by_name_url = [path('<str:beer_name>/', BeerViewSet.as_view({'get': 'get_beer_by_name'}), name='get-beer-by-name')]
+get_beer_by_name_url = [path('<str:beer_name>/', BeerViewSet.as_view({'get': 'get_beer_by_name'}), name='get-beer-by-name-path')]
 
 urlpatterns = [
     path('', include(router.urls)),
