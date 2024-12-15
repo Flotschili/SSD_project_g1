@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 from beers.models import Beer
 
 
@@ -17,3 +19,10 @@ class BeerSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
 
+    def validate(self, attrs):
+        beer = Beer(**attrs)
+        try:
+            beer.clean()
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+        return attrs
