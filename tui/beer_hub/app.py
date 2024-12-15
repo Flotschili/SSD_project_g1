@@ -13,6 +13,8 @@ BASE_URL = "http://localhost:8000/api/v1"
 
 
 class App:
+    __selected_hub: BeerHub
+
     def __init__(self):
         self.__beer_hub = self.__select_beer_hub()
         self.__menu = self.__create_main_menu()
@@ -50,9 +52,6 @@ class App:
 
         self.__selected_hub = None
         hub_selection_menu.run()
-
-        if self.__selected_hub is None:
-            sys.exit(1)  # Exit if no hub was selected
 
         return self.__selected_hub
 

@@ -1,4 +1,3 @@
-"""Tests for the beer_hub mapper module"""
 import math
 
 import pytest

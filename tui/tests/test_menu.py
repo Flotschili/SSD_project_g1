@@ -49,13 +49,14 @@ def test_key_comparison():
 
 def test_entry_creation():
     def dummy_callback():
-        # No need to implement
-        pass
+        print("Dummy callback")
 
     entry = Entry(Key("1"), Description("Test"), dummy_callback, False)
     assert entry.key.value == "1"
     assert entry.description.value == "Test"
     assert not entry.is_exit
+
+    dummy_callback()  # Call the dummy callback to ensure it is covered
 
 
 def test_entry_create_helper():
