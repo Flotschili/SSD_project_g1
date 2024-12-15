@@ -76,7 +76,6 @@ const BeerForm: React.FC<BeerFormProps> = ({ open, onClose, beer, onSave }) => {
     }
 
     if (
-      formBeer.beer_type !== BeerType.NonAlcoholicBeer &&
       formBeer.beer_type !== BeerType.AlcoholFreeWheatBeer &&
       formBeer.beer_type !== BeerType.AlcoholFreeLager &&
       (!formBeer.alcohol_content ||
@@ -173,7 +172,6 @@ const BeerForm: React.FC<BeerFormProps> = ({ open, onClose, beer, onSave }) => {
                 ...formBeer,
                 beer_type: e.target.value as BeerType,
                 alcohol_content:
-                  formBeer?.beer_type === BeerType.NonAlcoholicBeer ||
                   formBeer?.beer_type === BeerType.AlcoholFreeWheatBeer ||
                   formBeer?.beer_type === BeerType.AlcoholFreeLager
                     ? 0
@@ -215,8 +213,7 @@ const BeerForm: React.FC<BeerFormProps> = ({ open, onClose, beer, onSave }) => {
           error={!!errors.description}
           helperText={errors.description ? errors.description.join(", ") : ""}
         />
-        {formBeer.beer_type === BeerType.NonAlcoholicBeer ||
-        formBeer.beer_type === BeerType.AlcoholFreeWheatBeer ||
+        {formBeer.beer_type === BeerType.AlcoholFreeWheatBeer ||
         formBeer.beer_type === BeerType.AlcoholFreeLager ? null : (
           <TextField
             label="Alcohol Percent"
