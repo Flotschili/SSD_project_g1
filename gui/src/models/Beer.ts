@@ -1,7 +1,7 @@
 export interface Beer {
   id: number;
   name: string;
-  alcoholPercent: number;
+  alcohol_content: number;
   description: string;
   brewery: string;
 }
