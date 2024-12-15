@@ -6,32 +6,31 @@ from valid8 import validate, ValidationError
 
 from beer_hub import menu
 from beer_hub.domain import Beer, Name, Brewery, BeerType, AlcoholContent, ID, Description
-from beer_hub.logic import InMemoryBeerHub, RESTBeerHub
+from beer_hub.logic import InMemoryBeerHub, RESTBeerHub, BeerHub
 from beer_hub.menu import Menu, Entry
 
 BASE_URL = "http://localhost:8000/api/v1"
+
 
 class App:
     def __init__(self):
         self.__beer_hub = self.__select_beer_hub()
         self.__menu = self.__create_main_menu()
 
-    # TODO: type hint with BeerHub interface
-    def __select_beer_hub(self):
+    def __select_beer_hub(self) -> BeerHub:
         def create_inmemory_hub():
             self.__selected_hub = InMemoryBeerHub()
 
         def create_rest_hub():
             username = self.__read('Username', str)
             password = self.__read('Password', str)
+
             try:
                 client = Client(base_url=BASE_URL, raise_on_unexpected_status=True)
                 authenticated_client = RESTBeerHub.login(client, username, password)
                 self.__selected_hub = RESTBeerHub(authenticated_client)
-                return True
             except Exception as e:
                 print(f"Failed to create REST BeerHub: {str(e)}")
-                return False
 
         hub_selection_menu = Menu.Builder(menu.Description('Select BeerHub Implementation'), auto_select=lambda: None) \
             .with_entry(Entry.create('1', 'InMemory BeerHub',
@@ -122,12 +121,11 @@ class App:
         self.__menu.run()
 
     def run(self) -> None:
-        self.__run()
-        # try:
-        #     self.__run()
-        # except:
-        #     print('Panic error!', file=sys.stderr)
-        #     raise
+        try:
+            self.__run()
+        except:
+            print('Panic error!', file=sys.stderr)
+            raise
 
     @staticmethod
     def __read(prompt: str, builder: Callable) -> Any:

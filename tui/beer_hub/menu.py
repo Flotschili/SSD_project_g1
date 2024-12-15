@@ -42,7 +42,8 @@ class Entry:
         validate_dataclass(self)
 
     @staticmethod
-    def create(key: str, description: str, on_selected: Callable[[], None]=lambda: None, is_exit: bool=False) -> 'Entry':
+    def create(key: str, description: str, on_selected: Callable[[], None] = lambda: None,
+               is_exit: bool = False) -> 'Entry':
         return Entry(Key(key), Description(description), on_selected, is_exit)
 
 
@@ -100,7 +101,7 @@ class Menu:
         __menu: Optional['Menu']
         __create_key = object()
 
-        def __init__(self, description: Description, auto_select: Callable[[], None]=lambda: None):
+        def __init__(self, description: Description, auto_select: Callable[[], None] = lambda: None):
             self.__menu = Menu(description, auto_select, self.__create_key)
 
         @staticmethod

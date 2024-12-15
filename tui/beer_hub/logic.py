@@ -85,7 +85,7 @@ class InMemoryBeerHub(BeerHub):
         return next((beer for beer in self.__beers if beer.id == id), None)
 
     def get_beer_by_name(self, name: Name) -> Optional[Beer]:
-        return next(beer for beer in self.__beers if beer.name == name)
+        return next((beer for beer in self.__beers if beer.name == name), None)
 
     def add_beer(self, beer: Beer) -> None:
         if beer.id == ID(-1):
