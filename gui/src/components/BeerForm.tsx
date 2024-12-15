@@ -129,6 +129,8 @@ const BeerForm: React.FC<BeerFormProps> = ({ open, onClose, beer, onSave }) => {
       return;
     }
 
+    console.log("Saving beer", JSON.stringify(formBeer));
+
     let promise;
     if (beer) {
       promise = BeerService.updateBeer(formBeer.id!!, formBeer as Beer);
@@ -173,9 +175,9 @@ const BeerForm: React.FC<BeerFormProps> = ({ open, onClose, beer, onSave }) => {
                 ...formBeer,
                 beer_type: e.target.value as BeerType,
                 alcohol_content:
-                  beer?.beer_type === BeerType.NonAlcoholicBeer ||
-                  beer?.beer_type === BeerType.AlcoholFreeWheatBeer ||
-                  beer?.beer_type === BeerType.AlcoholFreeLager
+                  formBeer?.beer_type === BeerType.NonAlcoholicBeer ||
+                  formBeer?.beer_type === BeerType.AlcoholFreeWheatBeer ||
+                  formBeer?.beer_type === BeerType.AlcoholFreeLager
                     ? 0
                     : formBeer.alcohol_content,
               })
