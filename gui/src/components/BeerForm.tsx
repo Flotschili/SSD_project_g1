@@ -129,8 +129,6 @@ const BeerForm: React.FC<BeerFormProps> = ({ open, onClose, beer, onSave }) => {
       return;
     }
 
-    console.log("Saving beer", JSON.stringify(formBeer));
-
     let promise;
     if (beer) {
       promise = BeerService.updateBeer(formBeer.id!!, formBeer as Beer);
