@@ -1,9 +1,7 @@
-from pickle import FALSE
-
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_list_or_404
 from .models import Beer
 from .serializers import BeerSerializer
 from .permissions import IsBeerViewer, IsBeerEditor
@@ -29,7 +27,7 @@ class BeerViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='name')
     def get_beer_by_name(self, request, beer_name=None):
-        beer = get_object_or_404(self.get_queryset(), name=beer_name)
+        beer = get_list_or_404(self.get_queryset(), name=beer_name)
         serializer = self.get_serializer(beer)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
