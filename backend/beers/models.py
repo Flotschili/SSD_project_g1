@@ -43,7 +43,7 @@ class Beer(models.Model):
     def clean(self):
         super().clean()
 
-        if self.beer_type == "Non-Alcoholic" and self.alcohol_content > 0.5:
+        if self.beer_type.startswith("Non-Alcoholic") and self.alcohol_content > 0.5:
             raise ValidationError({
                 'alcohol_content': "Non-Alcoholic beer must not have more than 0.5% alcohol content."
             })
@@ -52,7 +52,6 @@ class Beer(models.Model):
             raise ValidationError({
                 'alcohol_content': "Alcohol-Free beers must have 0.0% alcohol content."
             })
-
 
     def __str__(self):
         return self.name
