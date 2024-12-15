@@ -25,8 +25,6 @@ class AuthService {
   async validateToken(): Promise<boolean> {
     try {
       const response = await axiosInstance.get(VALIDATE_TOKEN_URL);
-      console.log('Token validation response:', response.data);
-
       return response.status === 200 && response.data;
     } catch (error) {
       console.error('Error validating token:', error);

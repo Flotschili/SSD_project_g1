@@ -1,7 +1,7 @@
 import { Beer } from "../models/Beer";
 import axiosInstance from "./axiosConfig"; // Import the configured Axios instance
 
-const BEER_API_URL = '/beers/';
+const BEER_API_URL = "/beers/";
 
 class BeerService {
   async getBeers() {

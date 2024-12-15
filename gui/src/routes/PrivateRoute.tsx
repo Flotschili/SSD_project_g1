@@ -12,7 +12,6 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
   useEffect(() => {
     const checkAuth = async () => {
       const result = await AuthService.validateToken();
-      console.log("Authenticated: ", result)
       setAuthenticated(result);
     };
 

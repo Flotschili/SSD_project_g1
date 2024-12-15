@@ -12,6 +12,6 @@
         "*": ["node_modules/*", "src/*"]
       }
     },
-    "include": ["src"]
+    "include": ["src", "types/index.d.ts"]
   }
   

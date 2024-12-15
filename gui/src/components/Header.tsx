@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import AuthService from '../services/AuthService';
+import logo from '../logo_cropped.jpg';
 
 const Header: React.FC = () => {
   const handleLogout = () => {
@@ -10,11 +11,11 @@ const Header: React.FC = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{marginBottom: '1rem'}}>
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          BeerHub
-        </Typography>
+        <Box sx={{ flexGrow: 1 }}>
+          <img src={logo} alt="Beer" style={{ height: '3rem' }} />
+        </Box>
         <Button color="inherit" onClick={handleLogout}>
           Logout
         </Button>

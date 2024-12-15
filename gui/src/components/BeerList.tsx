@@ -59,6 +59,7 @@ const BeerList: React.FC = () => {
                 Name
               </TableSortLabel>
             </TableCell>
+            <TableCell>Beer Type</TableCell>
             <TableCell>Brewery</TableCell>
             <TableCell>
               <TableSortLabel
@@ -75,6 +76,7 @@ const BeerList: React.FC = () => {
           {sortedBeers.map((beer) => (
             <TableRow key={beer.id} onClick={() => handleOpen(beer)}>
               <TableCell>{beer.name}</TableCell>
+              <TableCell>{beer.beer_type}</TableCell>
               <TableCell>{beer.brewery}</TableCell>
               <TableCell>{beer.alcohol_content}</TableCell>
             </TableRow>
