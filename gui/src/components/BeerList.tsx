@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { Beer } from '../models/Beer';
 import BeerService from '../services/BeerService';
-import { useNavigate } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, Button } from '@mui/material';
 import BeerForm from './BeerForm';
 
@@ -12,7 +11,6 @@ const BeerList: React.FC = () => {
   const [sortAsc, setSortAsc] = useState(true);
   const [open, setOpen] = useState(false);
   const [selectedBeer, setSelectedBeer] = useState<Beer | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     BeerService.getBeers().then(setBeers);

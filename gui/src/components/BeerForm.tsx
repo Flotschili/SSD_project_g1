@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { Beer, BeerType } from "../models/Beer";
 import BeerService from "../services/BeerService";
-import { set } from "react-hook-form";
 
 const MAX_NAME_LENGTH = 100;
 const MAX_BREWERY_LENGTH = 100;
