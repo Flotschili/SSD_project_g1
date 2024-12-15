@@ -46,11 +46,9 @@ class BeerViewSet(viewsets.ModelViewSet):
                       404 if no beer found
                       400 if beer_name parameter is missing
         """
-        if beer_name:
-            beers = self.queryset.filter(name__icontains=beer_name)
-            serializer = self.get_serializer(beers, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({"detail": "beer_name parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+        beers = self.queryset.filter(name__icontains=beer_name)
+        serializer = self.get_serializer(beers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class BreweryViewSet(viewsets.ViewSet):
