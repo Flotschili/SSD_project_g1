@@ -17,7 +17,7 @@ class ValidationConstants:
     BEER_TYPE_MAX_LENGTH = 30
     ALCOHOL_CONTENT_MIN = 0.0
     ALCOHOL_CONTENT_MAX = 75.0
-    ALPHANUMERIC_SPACE_PATTERN = r'[0-9A-Za-zäöü\- ]*'
+    ALPHANUMERIC_SPACE_PATTERN = r'[0-9A-Za-zäöü\-\.\: ]*'
 
     VALID_BEER_TYPES = [
         # Pale Lagers and Pilsners

@@ -6,32 +6,37 @@ from valid8 import validate, ValidationError
 
 from beer_hub import menu
 from beer_hub.domain import Beer, Name, Brewery, BeerType, AlcoholContent, ID, Description
-from beer_hub.logic import InMemoryBeerHub, RESTBeerHub
+from beer_hub.logic import InMemoryBeerHub, RESTBeerHub, BeerHub
 from beer_hub.menu import Menu, Entry
 
 BASE_URL = "http://localhost:8000/api/v1"
 
+
 class App:
+    __selected_hub: BeerHub
+
     def __init__(self):
         self.__beer_hub = self.__select_beer_hub()
         self.__menu = self.__create_main_menu()
 
-    # TODO: type hint with BeerHub interface
-    def __select_beer_hub(self):
+    def __select_beer_hub(self) -> BeerHub:
         def create_inmemory_hub():
             self.__selected_hub = InMemoryBeerHub()
 
         def create_rest_hub():
-            username = self.__read('Username', str)
-            password = self.__read('Password', str)
-            try:
-                client = Client(base_url=BASE_URL, raise_on_unexpected_status=True)
+            client = Client(base_url=BASE_URL, raise_on_unexpected_status=True)
+            authenticated_client = None
+
+            # login loop
+            while authenticated_client is None:
+                username = self.__read('Username', str)
+                password = self.__read('Password', str)
                 authenticated_client = RESTBeerHub.login(client, username, password)
-                self.__selected_hub = RESTBeerHub(authenticated_client)
-                return True
-            except Exception as e:
-                print(f"Failed to create REST BeerHub: {str(e)}")
-                return False
+
+                if authenticated_client is None:
+                    print("Invalid Credentials! Try again.")
+
+            self.__selected_hub = RESTBeerHub(authenticated_client)
 
         hub_selection_menu = Menu.Builder(menu.Description('Select BeerHub Implementation'), auto_select=lambda: None) \
             .with_entry(Entry.create('1', 'InMemory BeerHub',
@@ -48,13 +53,10 @@ class App:
         self.__selected_hub = None
         hub_selection_menu.run()
 
-        if self.__selected_hub is None:
-            sys.exit(1)  # Exit if no hub was selected
-
         return self.__selected_hub
 
     def __create_main_menu(self):
-        return Menu.Builder(menu.Description('BeerHub'), auto_select=lambda: self.__after_action()) \
+        return Menu.Builder(menu.Description('BeerHub'))\
             .with_entry(Entry.create('1', 'List all beers',
                                      on_selected=lambda: self.__print_beers())) \
             .with_entry(Entry.create('2', 'Add beer',
@@ -71,8 +73,6 @@ class App:
                                      on_selected=lambda: self.__sort_submenu())) \
             .with_entry(Entry.create('8', 'Statistics',
                                      on_selected=lambda: self.__statistics_submenu())) \
-            .with_entry(Entry.create('9', 'Ping backend',
-                                     on_selected=lambda: self.__ping_backend())) \
             .with_entry(Entry.create('0', 'Exit',
                                      on_selected=lambda: print('Bye!'),
                                      is_exit=True)) \
@@ -122,12 +122,11 @@ class App:
         self.__menu.run()
 
     def run(self) -> None:
-        self.__run()
-        # try:
-        #     self.__run()
-        # except:
-        #     print('Panic error!', file=sys.stderr)
-        #     raise
+        try:
+            self.__run()
+        except:
+            print('Panic error!', file=sys.stderr)
+            raise
 
     @staticmethod
     def __read(prompt: str, builder: Callable) -> Any:
@@ -249,11 +248,6 @@ class App:
         self.__print_beers_internal(beers)
 
     @staticmethod
-    def __ping_backend():
-        ping_backend()
-        # pass
-
-    @staticmethod
     def __print_beers_internal(beers: list[Beer]) -> None:
         if not beers:
             print("No beers to display")
@@ -294,6 +288,3 @@ class App:
     def __print_breweries(self):
         breweries = self.__beer_hub.get_breweries()
         self.__print_breweries_internal(breweries)
-
-    def __after_action(self):
-        pass
