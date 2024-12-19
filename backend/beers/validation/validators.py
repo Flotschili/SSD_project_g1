@@ -28,7 +28,7 @@ def validate_title(value: str) -> None:
         raise ValidationError(f"Name must not exceed {MAX_NAME_LENGTH} characters.")
 
     #only allow letters and spaces
-    if not re.match(r'^[a-zA-Z\s]*$', value):
+    if not re.match(r'^[a-zA-ZÖöÄäÜü\s]*$', value):
         raise ValidationError("Name must not contain special characters.")
 
 
