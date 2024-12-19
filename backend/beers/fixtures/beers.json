@@ -6,7 +6,7 @@
             "brewery": "Stiegl Brewery",
             "description": "A full-bodied Austrian lager with a golden hue and well-balanced malt flavors.",
             "alcohol_content": 5.0,
-            "beer_type": "Lager",
+            "beer_type": "Vienna Lager",
             "created_at": "2024-12-12T00:00:00Z",
             "updated_at": "2024-12-12T00:00:00Z"
         }
@@ -78,7 +78,7 @@
             "brewery": "Schladminger Brewery",
             "description": "An unfiltered organic Zwickl beer with a cloudy appearance and refreshing taste.",
             "alcohol_content": 5.0,
-            "beer_type": "Zwickl",
+            "beer_type": "Zwickelbier",
             "created_at": "2024-12-12T00:00:00Z",
             "updated_at": "2024-12-12T00:00:00Z"
         }
