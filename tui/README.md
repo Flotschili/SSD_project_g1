@@ -39,3 +39,8 @@ Add following to components/schemas:
 ### Rename /beers/name/{beer_name}/
 Search for `/beers/name/{beer_name}/`.
 Adapt `operationId: beers_get_beer_by_name_2`.
+
+### Re-Generate client
+```bash
+openapi-python-client generate --path ..\brewery-openapi.yaml --overwrite
+```
