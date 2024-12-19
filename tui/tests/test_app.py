@@ -29,16 +29,22 @@ def mock_beer_hub():
 class TestApp:
 
     @patch('beer_hub.app.RESTBeerHub')
-    def test_select_rest_hub(self, mock_rest):
+    @patch('getpass.getpass')
+    def test_select_rest_hub(self, mock_getpass, mock_rest):
         mock_rest.login.return_value = MagicMock()
-        with patch('builtins.input', side_effect=['2', 'user', 'pass', '0']):
+        mock_getpass.return_value = 'pass'
+
+        with patch('builtins.input', side_effect=['2', 'user', '0']):
             app = App()
-            assert app._App__selected_hub is not None  # Check selected_hub instead of beer_hub
+            assert app._App__selected_hub is not None
 
     @patch('beer_hub.app.RESTBeerHub')
-    def test_select_rest_hub_retry_login(self, mock_rest):
+    @patch('getpass.getpass')
+    def test_select_rest_hub_retry_login(self, mock_getpass, mock_rest):
         mock_rest.login.side_effect = [None, MagicMock()]
-        with patch('builtins.input', side_effect=['2', 'user', 'pass', 'user', 'pass', '0']):
+        mock_getpass.return_value = 'pass'
+
+        with patch('builtins.input', side_effect=['2', 'user', 'user', '0']):
             app = App()
             assert app._App__selected_hub is not None
 
