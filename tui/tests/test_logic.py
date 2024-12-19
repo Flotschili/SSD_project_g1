@@ -77,6 +77,11 @@ def test_get_beer_by_id(rest_beer_hub):
         beers_read_mock.assert_called_once_with(client=rest_beer_hub._RESTBeerHub__client, id=1)
         assert beer == test_beers[0]
 
+def test_get_beer_by_id_exception_handling(rest_beer_hub):
+    with patch("beer_hub_client.api.beers.beers_read.sync", side_effect=UnexpectedStatus(404, b'Not Found')):
+        beer = rest_beer_hub.get_beer_by_id(MagicMock(value=1))
+
+        assert beer is None
 
 def test_get_beer_by_name(rest_beer_hub):
     with patch("beer_hub_client.api.beers.beers_get_beer_by_name_2.sync", return_value=test_dtos) as get_by_name_mock:

@@ -149,8 +149,11 @@ class RESTBeerHub(BeerHub):
         return dto_list_to_beer_list(response)
 
     def get_beer_by_id(self, id: ID) -> Optional[Beer]:
-        response = beers_read.sync(client=self.__client, id=id.value)
-        return dto_to_beer(response)
+        try:
+            response = beers_read.sync(client=self.__client, id=id.value)
+            return dto_to_beer(response)
+        except UnexpectedStatus:
+            return None
 
     def get_beer_by_name(self, name: Name) -> Optional[Beer]:
         response = beers_get_beer_by_name_2.sync(client=self.__client, beer_name=name.value)

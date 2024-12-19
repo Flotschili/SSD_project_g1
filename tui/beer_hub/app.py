@@ -1,4 +1,5 @@
 import sys
+import getpass
 from typing import Any, Callable, Optional
 
 from beer_hub_client import Client
@@ -30,7 +31,8 @@ class App:
             # login loop
             while authenticated_client is None:
                 username = self.__read('Username', str)
-                password = self.__read('Password', str)
+                password = getpass.getpass("Password: ")
+
                 authenticated_client = RESTBeerHub.login(client, username, password)
 
                 if authenticated_client is None:
