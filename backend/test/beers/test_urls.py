@@ -133,6 +133,11 @@ class TestBeerRetrieval:
         assert response.status_code == HTTP_200_OK
         assert response.data["name"] == beer.name
 
+    def test_retrieve_beer_invalid_id(self, client_with_user):
+        url = reverse("beer-detail", args=["invalidId"])
+        response = client_with_user.get(url)
+        assert response.status_code == HTTP_404_NOT_FOUND
+
     def test_retrieve_all_beers(self, client_with_user, beers):
         url = reverse("beer-list")
         response = client_with_user.get(url)
