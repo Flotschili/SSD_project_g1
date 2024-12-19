@@ -1,41 +1,20 @@
-TODO
-
-
+# BeerHub Tui
+## TL;DR Start Application
 ### Generate client
-```bash
-pip install openapi-python-client
-```
-```bash
-openapi-python-client generate --path ..\brewery-openapi.yaml
-```
-```bash
-poetry add ./beer-hub-client
-```
-
-
-### Update client
-```bash
-poetry remove beer-hub-client
-```
 ```bash
 openapi-python-client generate --path ..\brewery-openapi.yaml --overwrite
 ```
 ```bash
 poetry add ./beer-hub-client
 ```
-#### If generating fails you have to reinstall the openapi-python-client
-```bash
-pip uninstall openapi-python-client
-```
-```bash
-pip install openapi-python-client
-```
+### Start TUI
+Run `__main__` file.
 
-## Adapt OpenAPI Spec
+
+## After fetching new version of the OpenAPI Spec
+### Adapt OpenAPI Spec
 The automatically generated openapi spec from django has a few inconsistencies.
 ### Correct return object from login
-
-
 Adapt the /auth/login/ response:
 ```yaml
       responses:
@@ -56,3 +35,7 @@ Add following to components/schemas:
           title: Key
           type: string
 ```
+
+### Rename /beers/name/{beer_name}/
+Search for `/beers/name/{beer_name}/`.
+Adapt `operationId: beers_get_beer_by_name_2`.
