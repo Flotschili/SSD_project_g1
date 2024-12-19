@@ -9,9 +9,9 @@ readme = "README.md"
 python = "^3.9"
 valid8 = "^5.1.2"
 typeguard = "^4.4.1"
-beer-hub-client = {path = "beer-hub-client"}
 pytest = "^8.3.4"
 pytest-cov = "^6.0.0"
+openapi-python-client = "^0.22.0"
 
 
 [build-system]
